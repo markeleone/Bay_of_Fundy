@@ -7,7 +7,7 @@ Assorted code from 2021 internship for simulated and observational drifter data 
 ### Data Extraction/Visualizations
 #### drifter_functions_2021.py
 - Information: A collection of functions to extract observational drifter data from ERDDAP, plot the drifter on googlemaps and basemap.
-
+![Image of Drifter Releases from 1988-2019 in Bay of Fundy](https://github.com/markeleone/Bay_of_Fundy/blob/main/plots/drifterrelease_gmap_screenshot.png)
 
 
 #### FVCOM_uvmodel.py
