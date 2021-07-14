@@ -52,7 +52,7 @@ Assorted code from 2021 internship for simulated and observational drifter data 
 
 ![Image of DOPPIO Simulated Particles](https://github.com/markeleone/Bay_of_Fundy/blob/main/plots/BoFParticleTrack1.png)
 
-*What if we increase the number of particles (sensitivity analysis coming soon)*
+*What if we increase the number of particles? (sensitivity analysis coming soon)*
 
   - DOPPIO Simulated Particles in BoF Gyre, May 2018
 
