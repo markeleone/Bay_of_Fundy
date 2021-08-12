@@ -11,7 +11,7 @@ Manuscript but generalizable.
 import pandas as pd
 import sys
 import numpy as np
-import datetime as dt
+from datetime import datetime as dt
 import pytz
 import urllib3
 import pygmaps
@@ -25,8 +25,8 @@ from mpl_toolkits.basemap import Basemap
 
 #Your geographic, temporal, and depth ranges here
 BoF_box = [-64.72, -67.35, 45.33, 44.23]  # maxlon, minlon,maxlat,minlat, for BoF range
-time_range = [dt.datetime(2017, 1, 1, 0, 0, 0, 0, pytz.UTC),
-              dt.datetime(2020, 12, 29, 0, 0, 0, 0, pytz.UTC)]  # start time and end time
+time_range = [dt(2010, 11, 3, 0, 0, 0, 0, pytz.UTC),
+              dt(2020, 12, 29, 0, 0, 0, 0, pytz.UTC)]  # start time and end time
 depth_range = [-40, 40]  #min depth and max depth (meters)
 
 
@@ -107,18 +107,17 @@ def getobs_drift_by_info(gbox,input_time,depths):
         +'&depth%3C='+str(depth_max)
     
             
-    
     df = pd.read_csv(url,skiprows=[1]) #make drifter info table, USE THIS NORMALLY
-    
     #df = pd.read_csv(r'C:\Users\markl\.spyder-py3\example_data.csv', skiprows=[1]) example for testing
-   
-    #define outputs
+    df.sort_values(by='time', ascending = True, inplace = True) #sort by date in ascending order
+    
+    #define outputs 
     ids = df.id.values
     times = df.time.values
     latitudes = df.latitude.values
     longitudes = df.longitude.values
     depths = df.depth.values
-
+   
     #print(url) for testing
     return ids, times, latitudes, longitudes, depths
 
@@ -140,6 +139,7 @@ def getobs_drift_by_ids(identity):
 
 
     df = pd.read_csv(url,skiprows=[1]) #drifter info table, USE THIS NORMALLY
+    df.sort_values(by='time', ascending = True, inplace = True) #sort by date in ascending order
     
     #define outputs
     ids = df.id.values
@@ -147,7 +147,7 @@ def getobs_drift_by_ids(identity):
     latitudes = df.latitude.values
     longitudes = df.longitude.values
     depths = df.depth.values
-
+    
     return ids, times, latitudes, longitudes,depths
 
 def plot_drift_release_gmap():
@@ -189,7 +189,7 @@ def plot_drift_release_gmap():
             mymap.addpoint(lats1[first_ping_index], lons1[first_ping_index], 'black')
             
     #mymap.draw('./' + dt.datetime.now().strftime('%Y-%m-%d %H:%M') + '.html')
-    mymap.draw('driftreleasemap2.html') #change this filename based on user
+    mymap.draw('driftreleasemapALLTIME.html') #change this filename based on user
     
     
 
@@ -284,8 +284,10 @@ def plot_drift_release_basemap():
     
     
 if __name__ == '__main__':
-    plot_drift_release_basemap()
-    
+    # obs_id = 196440671 #drifter ID from ERDDAP
+    # ids, times, obs_lat, obs_lon, depths = getobs_drift_by_ids(obs_id)
+    # print(times)
+    plot_drift_release_gmap()
     
     
     

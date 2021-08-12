@@ -12,7 +12,7 @@ from pylab import *
 import matplotlib.tri as Tri 
 import matplotlib.path as mpltpath
 from datetime import datetime as dt
-from datetime import timedelta
+from datetime import timedelta as delta
 from dateutil import parser
 import pandas as pd
 import pytz
@@ -67,17 +67,18 @@ dimensions = {'lat':'lat_rho',
 fieldset = FieldSet.from_netcdf(filenames, variables, dimensions)
 pset = ParticleSet.from_line(fieldset=fieldset, pclass=JITParticle,
                              size = 5, #releasing x particles
-                             start=(-66.8,45), #releasing on a line: the start longitude and latitude
+                             start=(-66.75,44.9), #releasing on a line: the start longitude and latitude
                              finish=(-66.2,44.6)) # releasing on a line: the end longitude and latitude
-output_file = pset.ParticleFile(name='BoFParticles.nc', outputdt=timedelta(hours=6))
+output_file = pset.ParticleFile(name='BoFParticles.nc', outputdt=delta(hours=6))
 pset.execute(AdvectionRK4, #4th order RK
-             runtime=timedelta(days=14), #run for 10 days
-             dt=timedelta(minutes=5),
+             runtime=delta(days=14), #run for 10 days
+             dt=delta(minutes=5),
              output_file = output_file)
 
-#print('BoFParticles.nc')
+
 
 output_file.export()
+
 
 plt = plotTrajectoriesFile('BoFParticles.nc')
                      # tracerfile='his_History_Best.nc',

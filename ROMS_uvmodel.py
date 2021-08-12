@@ -18,11 +18,12 @@ from dateutil import parser
 import pandas as pd
 import pytz
 import glob
-import netCDF4
 import os
 import pathlib as path
 from mpl_toolkits.basemap import Basemap
 from scipy import stats
+import urllib3
+import netCDF4
 
 
 #url = 'http://geoport.whoi.edu/thredds/dodsC/coawst_4/use/fmrc/coawst_4_use_best.ncd' #COAWST
@@ -31,9 +32,59 @@ from scipy import stats
 #url = 'http://tds.ve.ismar.cnr.it:8080/thredds/dodsC/ismar/model/field2/run1/Field_2km_1108_out30min_his_0724.nc'
 #url='http://tds.ve.ismar.cnr.it:8080/thredds/dodsC/field2_test/run1/his'
 
+###HARDCODES FOR getroms_field_byinfo()
+BoF_box = [-64.7255, -67.3578, 45.3302, 44.2376]  # maxlon, minlon,maxlat,minlat, for BoF range
+time_range =  ['2019', '06', '16', '01', '00', '00',
+               '2019', '06', '19', '12', '00', '00']  # start time and end time
+s_rho = -0.9875  #-1 is case of surface flow
+
+
+def getroms_field_byinfo(gbox,input_time,s_rho):
+    """to fetch correct doppio url and velcoity field for an actual time range 
+    updated version of det_doppio_url written by Mark in 2021"""
+    lon_max=gbox[0];lon_min=gbox[1];lat_max=gbox[2];lat_min=gbox[3]
+    min_year = input_time[0]; max_year = input_time[6]
+    min_month = input_time[1]; max_month = input_time[7]
+    min_day = input_time[2]; max_day = input_time[8]
+    min_hours = input_time[3]; max_hours = input_time[9]
+    min_mins = input_time[4]; max_mins = input_time[10]
+    min_seconds = input_time[5]; max_seconds = input_time[11]
+    #concatenate strings to form url
+    url = 'https://tds.marine.rutgers.edu/thredds/ncss/roms/doppio/2017_da/his/History_Best?'\
+    + 'var=u_eastward&var=v_northward&north=' + str(lat_max) + '&west=' + str(lon_min) + '&east='\
+    + str(lon_max) + '&south=' + str(lat_min) + '&disableProjSubset=on&horizStride=1&time_start='\
+    + str(min_year)+'-'+str(min_month)+'-'+str(min_day)+'T'+str(min_hours)+'%3A'+str(min_mins)+'%3A'+str(min_seconds)+'Z&time_end='\
+    + str(max_year)+'-'+str(max_month)+'-'+str(max_day)+'T'+str(max_hours)+'%3A'+str(max_mins)+'%3A'+str(max_seconds)+'Z&timeStride=1&vertCoord='\
+    + str(s_rho) + '&accept=netcdf'
+    print(url)
+    #url from website
+    url = 'https://tds.marine.rutgers.edu/thredds/ncss/roms/doppio/2017_da/his/History_Best?var=u_eastward&var=v_northward&north=45.3302&west=-67.3578&east=-64.7255&south=44.2376&disableProjSubset=on&horizStride=1&time_start=2019-06-16T01%3A00%3A00Z&time_end=2019-06-19T12%3A00%3A00Z&timeStride=1&vertCoord=-0.9875&accept=netcdf'
+    ds = netCDF4.Dataset(url) #make dataset
+    print(ds)
+    
+    
+
+
 def get_doppio_url(date):
+    """ To fetch correct doppio url for a given time range 
+    currently only for surface flow
+    Written by Mark in 2021
+    u is u_eastward
+    v is v_northward
+    time is time1
+    lon is lon_rho, lat is lat_rho
+    vertical levels are s_rho
+    h is bathymetry at rho points
+    -0.9875 is surface
+    -0.0125 is bottom
+    """
     url='http://tds.marine.rutgers.edu/thredds/dodsC/roms/doppio/2017_da/his/runs/History_RUN_2018-11T00:00:00Z'
     return url.replace('2018-11',date)
+
+
+
+
+
    
 def sh_bindata(x, y, z, xbins, ybins):
     """ From uvmodel.py
@@ -316,6 +367,8 @@ def plot_ROMS_velocity_field():
     
 def plot_ROMS_binned_velocity_field():
     "From uvmodel_function- IN DEVELOPMENT"
+    #### THE ISSUE WITH THIS PROGRAM IS I HAVE MODEL OUTPUT FOR ONE DAY AND 
+    ### I AM CALLING THE FUNCTION FOR SEVERAL DAYS... I NEED TO CHANGE GET_DOPPIO_URL
     date = '2018-05'
     url = get_doppio_url(date)
     nc = netCDF4.Dataset(url)
@@ -438,6 +491,7 @@ def plot_ROMS_depth():
     plt.colorbar()
     plt.savefig('ROMSdepth.png')
     
+    
 
 ###############MAIN PROGRAM############################
 # time = '2019-12-30 12:00:00'
@@ -454,7 +508,7 @@ def plot_ROMS_depth():
 
 
 if __name__ == '__main__':
-    plot_ROMS_binned_velocity_field()
+    getroms_field_byinfo(BoF_box,time_range,s_rho)
     
     
     
