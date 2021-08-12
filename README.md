@@ -57,13 +57,21 @@ Assorted code from 2021 internship for simulated and observational drifter data 
   - DOPPIO Simulated Particles in BoF Gyre, May 2018
 
 ![Image of DOPPIO Simulated Particles](https://github.com/markeleone/Bay_of_Fundy/blob/main/plots/BoFParticleTrack_05.01.2018_05.15.2018_10_2.png)
-  
-  
+
+#### observed_vs_simulated
+- Information: By advecting a particle in OceanParcels (RK4) and plotting the trajectory against an observed drifter released at the same lcoation over the same time period, generate this graph
+  - DOPPIO Simulated particle vs observed drifter
+ 
+![Image of DOPPIO Simulated Particles vs obs drifter](https://github.com/markeleone/Bay_of_Fundy/blob/main/plots/obs_vs_simdoppio_06_16_19_07_07_19.png)
+
+Now, if we want to look at the separation distance (haversine) between those observed and simulated drifters (common model evalutation metric) for the first 72 hours:
+![Image of DOPPIO Simulated Particles vs obs drifter sep distance](https://github.com/markeleone/Bay_of_Fundy/blob/main/plots/DOPPIO_sep_distance_over_time.png)
+
   
 ### Data Analysis/Statistics
 - Coming soon: 
   - Sensitivity analysis
-  - Separation distances
+  - Separation distances (normalized)
   - Other Lagrangian Statistics
   - Forcing mechanisms
   - Additional plots
