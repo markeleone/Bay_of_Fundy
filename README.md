@@ -65,7 +65,10 @@ Assorted code from 2021 internship for simulated and observational drifter data 
 ![Image of DOPPIO Simulated Particles vs obs drifter](https://github.com/markeleone/Bay_of_Fundy/blob/main/plots/obs_vs_simdoppio_06_16_19_07_07_19.png)
 
 Now, if we want to look at the separation distance (haversine) between those observed and simulated drifters (common model evalutation metric) for the first 72 hours:
+
 ![Image of DOPPIO Simulated Particles vs obs drifter sep distance](https://github.com/markeleone/Bay_of_Fundy/blob/main/plots/DOPPIO_sep_distance_over_time.png)
+
+
 
   
 ### Data Analysis/Statistics
